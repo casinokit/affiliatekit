@@ -1,0 +1,50 @@
+# Dependencies
+node_modules
+
+# Build outputs
+build
+dist
+.turbo
+.adonisjs/
+
+# Databases
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Temp files
+/tmp
+.cache/
+.eslintcache
+coverage/
+
+# Generated frontend files
+components.d.ts
+auto-imports.d.ts
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Editors
+.fleet
+.idea
+.vscode
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Frontend compiled assets
+public/assets
