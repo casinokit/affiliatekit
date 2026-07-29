@@ -10,6 +10,21 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: affiliatekit
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
     - uses: actions/checkout@v4
 
@@ -31,6 +46,11 @@ jobs:
       run: |
         cp apps/core/.env.example apps/core/.env
         cd apps/core && node ace generate:key
+        sed -i 's/DB_PASSWORD=/DB_PASSWORD=password/g' .env
+
+    - name: Run Migrations
+      run: |
+        cd apps/core && node ace migration:run --force
 
     - name: Run Tests
       run: pnpm test
