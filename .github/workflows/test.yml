@@ -48,6 +48,9 @@ jobs:
         cd apps/core && node ace generate:key
         sed -i 's/DB_PASSWORD=/DB_PASSWORD=password/g' .env
 
+    - name: Build Project
+      run: pnpm build
+
     - name: Run Migrations
       run: |
         cd apps/core && node ace migration:run --force
