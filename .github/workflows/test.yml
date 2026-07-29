@@ -27,5 +27,10 @@ jobs:
     - name: Install dependencies
       run: pnpm install
 
+    - name: Setup Environment Variables
+      run: |
+        cp apps/core/.env.example apps/core/.env
+        cd apps/core && node ace generate:key
+
     - name: Run Tests
       run: pnpm test
