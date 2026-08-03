@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useAuth } from '../../../composables/use-auth'
+
+const { login, loading, errorMsg, validationErrors } = useAuth()
 
 const form = ref({
   email: '',
@@ -7,10 +10,13 @@ const form = ref({
   remember: false,
 })
 
-const loading = ref(false)
-
-const onFinish = async (_values: any) => {
-  //
+const onFinish = async (values: any) => {
+  try {
+    // Delegate entirely to our new composable
+    await login(values)
+  } catch (err) {
+    // Handled internally by the composable, no extra UI logic needed here
+  }
 }
 </script>
 
@@ -22,12 +28,14 @@ const onFinish = async (_values: any) => {
       <p class="mt-2 text-base text-gray-500">Log in to your account</p>
     </div>
 
-    <!--    <a-alert v-if="error" :message="error" type="error" show-icon class="mb-4" />-->
+    <a-alert v-if="errorMsg" :message="errorMsg" type="error" show-icon />
 
     <a-form :model="form" layout="vertical" @finish="onFinish" class="space-y-6">
       <a-form-item
         label="Email"
         name="email"
+        :validateStatus="validationErrors.email ? 'error' : ''"
+        :help="validationErrors.email"
         :rules="[
           { required: true, message: 'Please input your email!' },
           { type: 'email', message: 'Invalid email address.' },
@@ -39,6 +47,8 @@ const onFinish = async (_values: any) => {
       <a-form-item
         label="Password"
         name="password"
+        :validateStatus="validationErrors.password ? 'error' : ''"
+        :help="validationErrors.password"
         :rules="[
           { required: true, message: 'Please input your password!' },
           { min: 5, message: 'Password must be at least 5 characters long.' },

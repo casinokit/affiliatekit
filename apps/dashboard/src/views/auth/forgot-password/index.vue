@@ -1,21 +1,19 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useAuth } from '../../../composables/use-auth'
+
+const { forgotPassword, loading, errorMsg } = useAuth()
 
 const form = ref({ email: '' })
-const loading = ref(false)
 const emailSent = ref(false)
-const errorMessage = ref('')
 
-const onFinish = async (_values: any) => {
-  loading.value = true
-  errorMessage.value = ''
+const onFinish = async (values: any) => {
   try {
-    // action
+    await forgotPassword(values)
     emailSent.value = true
   } catch (error) {
-   errorMessage.value = ''
-  } finally {
-    loading.value = false
+    // Error is handled and surfaced by errorMsg
+    emailSent.value = false
   }
 }
 </script>
@@ -39,7 +37,7 @@ const onFinish = async (_values: any) => {
     </div>
 
     <a-form v-else :model="form" layout="vertical" @finish="onFinish" class="space-y-6">
-      <a-alert v-if="errorMessage" :message="errorMessage" type="error" show-icon class="mb-4" />
+      <a-alert v-if="errorMsg" :message="errorMsg" type="error" show-icon class="mb-4" />
       <a-form-item
         label="Email"
         name="email"
