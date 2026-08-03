@@ -32,12 +32,16 @@ export class AuthService {
       await user.related('roles').attach([affiliateRole.id])
     }
 
-    const token = await User.accessTokens.create(user)
+    // Do NOT generate an access token here since the account is 'pending'
 
     // Broadcast Event
     await UserRegistered.dispatch(user)
 
-    return { user, token }
+    await user.load('roles', (roleQuery) => {
+      roleQuery.preload('permissions')
+    })
+
+    return { user }
   }
 
   async verifyEmail(token: string) {
@@ -61,7 +65,17 @@ export class AuthService {
       throw new Exception('Please verify your email address before logging in', { status: 403 })
     }
 
+    if (!user.canLogin) {
+      throw new Exception(`Your account is ${user.status}. Please contact support.`, {
+        status: 403,
+      })
+    }
+
     const token = await User.accessTokens.create(user)
+
+    await user.load('roles', (roleQuery) => {
+      roleQuery.preload('permissions')
+    })
 
     return { user, token }
   }
@@ -70,6 +84,11 @@ export class AuthService {
     if (user.currentAccessToken) {
       await User.accessTokens.delete(user, user.currentAccessToken.identifier)
     }
+  }
+
+  async logoutAll(user: User) {
+    // Delete all tokens for the user, logging them out globally
+    await User.accessTokens.deleteAll(user)
   }
 
   async forgotPassword(payload: ForgotPasswordDto) {

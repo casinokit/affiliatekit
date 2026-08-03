@@ -15,6 +15,13 @@ export default class AuthMiddleware {
     } = {}
   ) {
     await ctx.auth.authenticateUsing(options.guards)
+
+    const user = ctx.auth.user
+    if (user && !user.canLogin) {
+      const { Exception } = await import('@adonisjs/core/exceptions')
+      throw new Exception(`Your account is ${user.status}. Please contact support.`, { status: 403 })
+    }
+
     return next()
   }
 }

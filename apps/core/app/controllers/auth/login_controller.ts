@@ -11,11 +11,23 @@ export default class LoginController {
   async store({ request, response }: HttpContext) {
     const payload = await request.validateUsing(loginValidator)
 
-    const { user, token } = await this.authService.login(payload)
+    const { token } = await this.authService.login(payload)
 
     return response.success('Logged in successfully', {
-      user: UserTransformer.transform(user),
       token: token.value!.release(),
+    })
+  }
+
+  async me({ auth, response }: HttpContext) {
+    const user = auth.user!
+    
+    // Eager load the roles and permissions so they are available in the Transformer
+    await user.load('roles', (roleQuery) => {
+      roleQuery.preload('permissions')
+    })
+    
+    return response.success('User retrieved successfully', {
+      user: new UserTransformer(user).toObject(),
     })
   }
 
@@ -24,5 +36,11 @@ export default class LoginController {
     await this.authService.logout(user)
 
     return response.success('Logged out successfully')
+  }
+
+  async destroyAll({ auth, response }: HttpContext) {
+    const user = auth.getUserOrFail()
+    await this.authService.logoutAll(user)
+    return response.success('Logged out of all devices successfully')
   }
 }

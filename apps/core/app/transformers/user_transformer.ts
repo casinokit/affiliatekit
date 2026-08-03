@@ -3,13 +3,26 @@ import { BaseTransformer } from '@adonisjs/core/transformers'
 
 export default class UserTransformer extends BaseTransformer<User> {
   toObject() {
-    return this.pick(this.resource, [
+    const base = this.pick(this.resource, [
       'id',
       'fullName',
       'email',
-      'createdAt',
-      'updatedAt',
-      'initials',
+      'status',
     ])
+    
+    // Extract strings if relationships are loaded
+    const roles = this.resource.roles?.map((role) => role.slug) || []
+    const permissions = new Set<string>()
+    this.resource.roles?.forEach((role) => {
+      role.permissions?.forEach((permission) => {
+        if (permission.slug) permissions.add(permission.slug)
+      })
+    })
+
+    return {
+      ...base,
+      roles,
+      permissions: Array.from(permissions),
+    }
   }
 }

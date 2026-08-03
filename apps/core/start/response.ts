@@ -8,7 +8,7 @@ HttpResponse.macro(
       payload.data = data
     }
 
-    this.status(status).json(payload)
+    this.status(status).send(payload)
     return this
   }
 )
@@ -21,7 +21,7 @@ HttpResponse.macro(
       payload.errors = errors
     }
 
-    this.status(status).json(payload)
+    this.status(status).send(payload)
     return this
   }
 )

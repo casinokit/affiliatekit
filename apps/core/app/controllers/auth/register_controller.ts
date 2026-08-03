@@ -11,14 +11,11 @@ export default class RegisterController {
   async store({ request, response }: HttpContext) {
     const payload = await request.validateUsing(registerValidator)
 
-    const { user, token } = await this.authService.register(payload)
+    const { user } = await this.authService.register(payload)
 
     return response.success(
-      'Registration successful',
-      {
-        user: UserTransformer.transform(user),
-        token: token.value!.release(),
-      },
+      'Registration successful. Please wait until your account is activated.',
+      undefined,
       201
     )
   }
