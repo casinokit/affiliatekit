@@ -17,6 +17,11 @@ const errorRoutes: RouteRecordRaw[] = [
     component: () => import('../../views/errors/server-error.vue'),
   },
   {
+    path: '/network-error',
+    name: 'errors.network',
+    component: () => import('../../views/errors/network.vue'),
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: { name: 'errors.not-found' },
   },
