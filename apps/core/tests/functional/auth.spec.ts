@@ -31,7 +31,7 @@ test.group('Auth flow', (group) => {
     response.assertStatus(201)
     response.assertBodyContains({
       success: true,
-      message: 'Registration successful',
+      message: 'Registration successful. Please wait until your account is activated.',
     })
 
     const user = await User.findBy('email', 'test@example.com')
@@ -74,6 +74,9 @@ test.group('Auth flow', (group) => {
       password: 'password123',
     })
 
+    const role = await Role.findBy('slug', 'affiliate')
+    await user.related('roles').attach([role!.id])
+
     // Attempting login before verification should fail
     const failResponse = await client.post('/api/v1/auth/login').json({
       email: 'test3@example.com',
@@ -83,6 +86,7 @@ test.group('Auth flow', (group) => {
 
     // Mark verified
     user.emailVerifiedAt = DateTime.now()
+    user.status = 'active'
     await user.save()
 
     // Successful login
