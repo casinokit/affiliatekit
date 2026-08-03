@@ -29,6 +29,7 @@ export default defineConfig({
     () => import('@adonisjs/lucid/commands'),
     () => import('@adonisjs/session/commands'),
     () => import('@adonisjs/mail/commands'),
+    () => import('@tuyau/core/commands'),
   ],
 
   /*
@@ -56,7 +57,8 @@ export default defineConfig({
     () => import('#providers/api_provider'),
     () => import('@drago1204/adonis-lucid-soft-deletes/provider'),
     () => import('@adonisjs/mail/mail_provider'),
-    () => import('@adonisjs/core/providers/edge_provider')
+    () => import('@adonisjs/core/providers/edge_provider'),
+    () => import('@adonisjs/limiter/limiter_provider'),
   ],
 
   /*
@@ -72,7 +74,7 @@ export default defineConfig({
     () => import('#start/kernel'),
     () => import('#start/validator'),
     () => import('#start/response'),
-    () => import('#start/events')
+    () => import('#start/events'),
   ],
 
   /*
@@ -109,10 +111,12 @@ export default defineConfig({
   | the production build.
   |
   */
-  metaFiles: [{
-    pattern: 'resources/views/**/*.edge',
-    reloadServer: false,
-  }],
+  metaFiles: [
+    {
+      pattern: 'resources/views/**/*.edge',
+      reloadServer: false,
+    },
+  ],
 
   hooks: {
     init: [

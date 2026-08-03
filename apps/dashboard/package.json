@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@affiliatekit/core": "workspace:*",
     "@lucide/vue": "^1.27.0",
+    "@tuyau/core": "^1.2.2",
     "ant-design-vue": "^4.2.6",
     "dayjs": "^1.11.21",
     "pinia": "^4.0.2",
