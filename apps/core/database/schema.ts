@@ -99,6 +99,25 @@ export class RoleSchema extends BaseModel {
   declare updatedAt: DateTime | null
 }
 
+export class SettingSchema extends BaseModel {
+  static $columns = ['createdAt', 'group', 'id', 'key', 'name', 'updatedAt', 'value'] as const
+  $columns = SettingSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column()
+  declare group: string | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare key: string
+  @column()
+  declare name: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare value: any | null
+}
+
 export class UserSchema extends BaseModel {
   static $columns = ['companyName', 'createdAt', 'deletedAt', 'email', 'emailVerificationToken', 'emailVerifiedAt', 'fullName', 'id', 'meta', 'password', 'status', 'updatedAt'] as const
   $columns = UserSchema.$columns
