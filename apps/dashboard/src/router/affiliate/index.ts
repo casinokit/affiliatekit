@@ -4,7 +4,7 @@ const affiliateRoutes: RouteRecordRaw[] = [
   {
     path: '/affiliate',
     name: 'affiliate.dashboard',
-    component: () => import('../../views/affiliate/dashboard/index.vue'),
+    component: () => import('@/views/affiliate/dashboard/index.vue'),
   },
 ]
 

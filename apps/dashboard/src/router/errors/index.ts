@@ -4,22 +4,22 @@ const errorRoutes: RouteRecordRaw[] = [
   {
     path: '/not-found',
     name: 'errors.not-found',
-    component: () => import('../../views/errors/not-found.vue'),
+    component: () => import('@/views/errors/not-found.vue'),
   },
   {
     path: '/forbidden',
     name: 'errors.forbidden',
-    component: () => import('../../views/errors/forbidden.vue'),
+    component: () => import('@/views/errors/forbidden.vue'),
   },
   {
     path: '/server-error',
     name: 'errors.server-error',
-    component: () => import('../../views/errors/server-error.vue'),
+    component: () => import('@/views/errors/server-error.vue'),
   },
   {
     path: '/network-error',
     name: 'errors.network',
-    component: () => import('../../views/errors/network.vue'),
+    component: () => import('@/views/errors/network.vue'),
   },
   {
     path: '/:pathMatch(.*)*',

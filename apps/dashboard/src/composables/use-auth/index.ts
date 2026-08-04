@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { api } from '../../lib/tuyau'
-import { useAuthStore } from '../../stores/auth'
+import { api } from '@/lib/tuyau.ts'
+import { useAuthStore } from '@/stores/auth.ts'
 import { message } from 'ant-design-vue'
 
 export function useAuth() {
