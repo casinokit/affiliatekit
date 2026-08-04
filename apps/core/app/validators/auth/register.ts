@@ -8,6 +8,7 @@ export const registerValidator = vine.create({
   email: vine.string().email().maxLength(254).unique({ table: 'users', column: 'email' }),
   password: password(),
   passwordConfirmation: password().sameAs('password'),
+  meta: vine.any().optional(),
 })
 
 export type RegisterDto = Infer<typeof registerValidator>

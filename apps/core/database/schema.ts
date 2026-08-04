@@ -100,14 +100,10 @@ export class RoleSchema extends BaseModel {
 }
 
 export class UserSchema extends BaseModel {
-  static $columns = ['city', 'companyName', 'country', 'createdAt', 'deletedAt', 'email', 'emailVerificationToken', 'emailVerifiedAt', 'fullName', 'handler', 'handlerUsername', 'id', 'password', 'postal', 'state', 'status', 'streetAddress', 'updatedAt'] as const
+  static $columns = ['companyName', 'createdAt', 'deletedAt', 'email', 'emailVerificationToken', 'emailVerifiedAt', 'fullName', 'id', 'meta', 'password', 'status', 'updatedAt'] as const
   $columns = UserSchema.$columns
   @column()
-  declare city: string | null
-  @column()
   declare companyName: string | null
-  @column()
-  declare country: string | null
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column.dateTime()
@@ -120,22 +116,14 @@ export class UserSchema extends BaseModel {
   declare emailVerifiedAt: DateTime | null
   @column()
   declare fullName: string | null
-  @column()
-  declare handler: string | null
-  @column()
-  declare handlerUsername: string | null
   @column({ isPrimary: true })
   declare id: string
+  @column()
+  declare meta: any | null
   @column({ serializeAs: null })
   declare password: string
   @column()
-  declare postal: string | null
-  @column()
-  declare state: string | null
-  @column()
   declare status: string
-  @column()
-  declare streetAddress: string | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 }
