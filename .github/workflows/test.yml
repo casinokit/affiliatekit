@@ -40,20 +40,26 @@ jobs:
         cache: 'pnpm'
 
     - name: Install dependencies
-      run: pnpm install
+      run: pnpm install --frozen-lockfile
 
     - name: Setup Environment Variables
       run: |
         cp apps/core/.env.example apps/core/.env
-        cd apps/core && node ace generate:key
-        sed -i 's/DB_PASSWORD=/DB_PASSWORD=password/g' .env
+        APP_KEY=$(node -e "process.stdout.write(require('crypto').randomBytes(32).toString('hex'))")
+        sed -i "s/APP_KEY=/APP_KEY=${APP_KEY}/" apps/core/.env
+        sed -i 's/DB_PASSWORD=/DB_PASSWORD=password/g' apps/core/.env
 
-    - name: Build Project
-      run: pnpm build
+    - name: Build Core
+      run: cd apps/core && pnpm build
+
+    - name: Generate Tuyau Registry Placeholder
+      run: node scripts/generate-tuyau-placeholder.mjs
+
+    - name: Build Dashboard
+      run: cd apps/dashboard && pnpm run build:ci
 
     - name: Run Migrations
-      run: |
-        cd apps/core && node ace migration:run --force
+      run: cd apps/core && node ace migration:run --force
 
     - name: Run Tests
-      run: pnpm test
+      run: cd apps/core && pnpm test

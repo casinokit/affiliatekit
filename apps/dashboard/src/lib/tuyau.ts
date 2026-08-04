@@ -1,4 +1,5 @@
 import { createTuyau } from '@tuyau/core/client'
+// @ts-ignore - Ignore missing types during CI build (registry is generated dynamically)
 import { registry } from '@affiliatekit/core/registry'
 import type { useAuthStore } from '../stores/auth'
 import type { Router } from 'vue-router'
