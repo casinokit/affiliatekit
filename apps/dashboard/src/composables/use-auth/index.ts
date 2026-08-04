@@ -43,6 +43,7 @@ export function useAuth() {
       // 1. Hit the backend login endpoint
       const response = await api.request('auth.login.store', {
         body: credentials,
+        headers: { 'X-Silent-Errors': 'true' },
       })
 
       const { data } = response as any
@@ -115,9 +116,9 @@ export function useAuth() {
       const response = await api.request('auth.register.store', {
         body: payload,
       })
-      
+
       const { message: msg } = response as any
-      
+
       // Instead of redirecting, we return true to let the component hide the form
       message.success(msg || 'Registration successful. Your account is pending activation.')
       return true
