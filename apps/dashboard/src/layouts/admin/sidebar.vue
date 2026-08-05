@@ -52,6 +52,11 @@ const menuItems: MenuItem[] = [
     ],
   },
   {
+    label: 'Settings',
+    icon: Settings,
+    routeName: 'admin.settings.general',
+  },
+  {
     label: 'Logout',
     icon: LogOut,
     action: 'logout',
@@ -62,7 +67,6 @@ const menuItems: MenuItem[] = [
 
 // 2. GET THE CURRENT ROUTE
 const route = useRoute() //
-
 
 const { logout } = useAuth()
 
@@ -104,7 +108,7 @@ const handleAction = async (actionName: string) => {
   >
     <!-- Brand -->
     <div class="flex items-center justify-center mt-8">
-<!--      <img :src="appStore.app.logo" alt="logo" class="!w-40" />-->
+      <!--      <img :src="appStore.app.logo" alt="logo" class="!w-40" />-->
     </div>
 
     <!-- Navigation -->
