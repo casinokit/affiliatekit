@@ -58,7 +58,7 @@ export class AuthService {
     return user
   }
 
-  async login(payload: LoginDto) {
+  async login(payload: LoginDto, deviceName: string = 'Unknown Device') {
     const user = await User.verifyCredentials(payload.email, payload.password)
 
     if (!user.emailVerifiedAt) {
@@ -71,7 +71,9 @@ export class AuthService {
       })
     }
 
-    const token = await User.accessTokens.create(user)
+    const token = await User.accessTokens.create(user, ['*'], {
+      name: deviceName,
+    })
 
     await user.load('roles', (roleQuery) => {
       roleQuery.preload('permissions')
