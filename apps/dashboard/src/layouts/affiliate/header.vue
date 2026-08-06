@@ -101,14 +101,14 @@ const handleLogout = async () => {
             <hr class="border-gray-200" />
 
             <!-- Profile -->
-            <a
-              href="#"
+            <RouterLink
+              :to="{ name: 'affiliate.profile' }"
               class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              @click.prevent="dropdownOpen = false"
+              @click="dropdownOpen = false"
             >
               <User class="w-4 h-4 mr-3" />
               <span>Profile</span>
-            </a>
+            </RouterLink>
 
             <hr class="border-gray-200" />
 

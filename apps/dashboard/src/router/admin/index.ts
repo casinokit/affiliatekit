@@ -12,6 +12,11 @@ const adminRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/admin/dashboard/index.vue'),
       },
       {
+        path: 'profile',
+        name: 'admin.profile',
+        component: () => import('@/views/shared/profile.vue'),
+      },
+      {
         path: 'settings',
         redirect: { name: 'admin.settings.general' },
         component: () => import('@/views/admin/settings/index.vue'),
