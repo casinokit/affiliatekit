@@ -7,15 +7,17 @@ import { SoftDeletes } from '@drago1204/adonis-lucid-soft-deletes'
 import { manyToMany } from '@adonisjs/lucid/orm'
 import type { ManyToMany } from '@adonisjs/lucid/types/relations'
 import Role from '#models/role'
+import { UserStatus } from '#enums/user_status'
 
 export default class User extends compose(UserSchema, withAuthFinder(hash), SoftDeletes) {
   static accessTokens = DbAccessTokensProvider.forModel(User)
   declare currentAccessToken?: AccessToken
+  declare status: UserStatus
 
   @manyToMany(() => Role)
   declare roles: ManyToMany<typeof Role>
 
   get canLogin() {
-    return this.status === 'active'
+    return this.status === UserStatus.ACTIVE
   }
 }

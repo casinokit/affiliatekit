@@ -8,6 +8,7 @@ import type { RegisterDto } from '#validators/auth/register'
 import type { ForgotPasswordDto } from '#validators/auth/forgot_password'
 import type { ResetPasswordDto } from '#validators/auth/reset_password'
 import { Exception } from '@adonisjs/core/exceptions'
+import { UserStatus } from '#enums/user_status'
 
 // Import Events
 import UserRegistered from '#events/auth/user_registered'
@@ -23,7 +24,7 @@ export class AuthService {
     const user = await User.create({
       ...userPayload,
       emailVerificationToken: verificationToken,
-      status: 'pending',
+      status: UserStatus.PENDING,
     })
 
     // Assign default role "Affiliate"
@@ -52,7 +53,7 @@ export class AuthService {
 
     user.emailVerificationToken = null
     user.emailVerifiedAt = DateTime.now()
-    user.status = 'active'
+    user.status = UserStatus.ACTIVE
     await user.save()
 
     return user

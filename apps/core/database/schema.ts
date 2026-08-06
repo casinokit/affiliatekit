@@ -40,7 +40,7 @@ export class BrandSchema extends BaseModel {
   @column.dateTime()
   declare deletedAt: DateTime | null
   @column({ isPrimary: true })
-  declare id: number
+  declare id: string
   @column()
   declare ipWhitelist: any | null
   @column()
@@ -132,7 +132,7 @@ export class SettingSchema extends BaseModel {
   @column()
   declare group: string | null
   @column({ isPrimary: true })
-  declare id: number
+  declare id: string
   @column()
   declare key: string
   @column()

@@ -1,6 +1,7 @@
 import Brand from '#models/brand'
 import stringHelpers from '@adonisjs/core/helpers/string'
 import type { CreateBrandDto, UpdateBrandDto } from '#validators/admin/brand'
+import { BrandStatus } from '#enums/brand_status'
 
 export default class BrandService {
   /**
@@ -31,7 +32,7 @@ export default class BrandService {
 
     return Brand.create({
       ...payload,
-      status: payload.status || 'active',
+      status: payload.status || BrandStatus.ACTIVE,
       securityCode,
     })
   }

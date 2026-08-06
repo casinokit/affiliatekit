@@ -1,5 +1,6 @@
 import { test } from '@japa/runner'
 import User from '#models/user'
+import { UserStatus } from '#enums/user_status'
 import Role from '#models/role'
 import Setting from '#models/setting'
 
@@ -14,7 +15,7 @@ test.group('Settings API', (group) => {
       {
         fullName: 'Admin User',
         password: 'password123',
-        status: 'active',
+        status: UserStatus.ACTIVE,
       }
     )
     await adminUser.related('roles').sync([adminRole.id])

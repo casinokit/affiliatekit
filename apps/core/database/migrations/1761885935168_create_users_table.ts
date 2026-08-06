@@ -1,4 +1,5 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
+import { UserStatus } from '#enums/user_status'
 
 export default class extends BaseSchema {
   protected tableName = 'users'
@@ -10,7 +11,7 @@ export default class extends BaseSchema {
       table.string('full_name').nullable()
       table.string('email', 254).notNullable().unique()
       table.string('password').notNullable()
-      table.string('status').notNullable().defaultTo('pending')
+      table.string('status').notNullable().defaultTo(UserStatus.PENDING)
       table.jsonb('meta').nullable()
       table.timestamp('email_verified_at').nullable()
       table.string('email_verification_token').nullable()

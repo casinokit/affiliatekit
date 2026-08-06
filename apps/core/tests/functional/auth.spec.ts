@@ -1,5 +1,6 @@
 import { test } from '@japa/runner'
 import User from '#models/user'
+import { UserStatus } from '#enums/user_status'
 import Role from '#models/role'
 import PasswordResetToken from '#models/password_reset_token'
 import { DateTime } from 'luxon'
@@ -36,7 +37,7 @@ test.group('Auth flow', (group) => {
 
     const user = await User.findBy('email', 'test@example.com')
     assert.isNotNull(user)
-    assert.equal(user!.status, 'pending')
+    assert.equal(user!.status, UserStatus.PENDING)
     assert.isNotNull(user!.emailVerificationToken)
 
     // Verify side-effects (Events -> Listeners -> Mails)
@@ -52,7 +53,7 @@ test.group('Auth flow', (group) => {
       email: 'test2@example.com',
       password: 'password123',
       emailVerificationToken: 'secret-token',
-      status: 'pending',
+      status: UserStatus.PENDING,
     })
 
     const response = await client.post('/api/v1/auth/verify-email').json({
@@ -62,7 +63,7 @@ test.group('Auth flow', (group) => {
     response.assertStatus(200)
 
     await user.refresh()
-    assert.equal(user.status, 'active')
+    assert.equal(user.status, UserStatus.ACTIVE)
     assert.isNull(user.emailVerificationToken)
     assert.isNotNull(user.emailVerifiedAt)
   })
@@ -86,7 +87,7 @@ test.group('Auth flow', (group) => {
 
     // Mark verified
     user.emailVerifiedAt = DateTime.now()
-    user.status = 'active'
+    user.status = UserStatus.ACTIVE
     await user.save()
 
     // Successful login
