@@ -267,15 +267,17 @@ const formatDate = (dateString: string) => {
           <template #renderItem="{ item }">
             <a-list-item>
               <template #actions>
-                <a-button
+                <a-popconfirm
                   v-if="!item.isCurrent"
-                  type="text"
-                  danger
-                  size="small"
-                  @click="onLogoutSession(item.id)"
+                  title="Are you sure you want to log out this session?"
+                  ok-text="Yes"
+                  cancel-text="No"
+                  @confirm="onLogoutSession(item.id)"
                 >
-                  Log out
-                </a-button>
+                  <a-button type="text" danger size="small">
+                    Log out
+                  </a-button>
+                </a-popconfirm>
               </template>
               <a-list-item-meta>
                 <template #title>
@@ -307,10 +309,17 @@ const formatDate = (dateString: string) => {
               If you notice any suspicious activity, you can log out of all devices.
             </p>
           </div>
-          <a-button danger :loading="logoutLoading" @click="onLogoutAll">
-            <template #icon><LogOut class="w-4 h-4 inline-block align-middle mr-1" /></template>
-            Logout All
-          </a-button>
+          <a-popconfirm
+            title="Are you sure you want to log out all other sessions?"
+            ok-text="Yes"
+            cancel-text="No"
+            @confirm="onLogoutAll"
+          >
+            <a-button danger :loading="logoutLoading">
+              <template #icon><LogOut class="w-4 h-4 inline-block align-middle mr-1" /></template>
+              Logout All
+            </a-button>
+          </a-popconfirm>
         </div>
       </a-card>
     </div>
