@@ -32,6 +32,31 @@ export class AuthAccessTokenSchema extends BaseModel {
   declare updatedAt: DateTime | null
 }
 
+export class BrandSchema extends BaseModel {
+  static $columns = ['createdAt', 'deletedAt', 'id', 'ipWhitelist', 'logo', 'name', 'securityCode', 'status', 'updatedAt', 'url'] as const
+  $columns = BrandSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column.dateTime()
+  declare deletedAt: DateTime | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare ipWhitelist: any | null
+  @column()
+  declare logo: string | null
+  @column()
+  declare name: string
+  @column()
+  declare securityCode: string
+  @column()
+  declare status: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare url: string | null
+}
+
 export class PasswordResetTokenSchema extends BaseModel {
   static $columns = ['createdAt', 'email', 'expiresAt', 'id', 'token', 'updatedAt'] as const
   $columns = PasswordResetTokenSchema.$columns
