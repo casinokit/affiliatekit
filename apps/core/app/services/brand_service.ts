@@ -20,7 +20,7 @@ export default class BrandService {
   /**
    * Find a single brand by ID
    */
-  async getBrand(id: number) {
+  async getBrand(id: string) {
     return Brand.findOrFail(id)
   }
 
@@ -40,7 +40,7 @@ export default class BrandService {
   /**
    * Update an existing brand
    */
-  async updateBrand(id: number, payload: UpdateBrandDto) {
+  async updateBrand(id: string, payload: UpdateBrandDto) {
     const brand = await this.getBrand(id)
     brand.merge(payload)
     await brand.save()
@@ -51,7 +51,7 @@ export default class BrandService {
   /**
    * Delete a brand (Soft Delete)
    */
-  async deleteBrand(id: number) {
+  async deleteBrand(id: string) {
     const brand = await this.getBrand(id)
     await brand.delete()
   }
@@ -59,7 +59,7 @@ export default class BrandService {
   /**
    * Force delete a brand (Hard Delete)
    */
-  async forceDeleteBrand(id: number) {
+  async forceDeleteBrand(id: string) {
     const brand = (await Brand.withTrashed().where('id', id).firstOrFail()) as Brand
     await brand.forceDelete()
   }

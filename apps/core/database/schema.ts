@@ -33,7 +33,7 @@ export class AuthAccessTokenSchema extends BaseModel {
 }
 
 export class BrandSchema extends BaseModel {
-  static $columns = ['createdAt', 'deletedAt', 'id', 'ipWhitelist', 'logo', 'name', 'securityCode', 'status', 'updatedAt', 'url'] as const
+  static $columns = ['createdAt', 'deletedAt', 'id', 'ipWhitelist', 'logo', 'name', 'programId', 'securityCode', 'status', 'updatedAt', 'url'] as const
   $columns = BrandSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime | null
@@ -47,6 +47,8 @@ export class BrandSchema extends BaseModel {
   declare logo: string | null
   @column()
   declare name: string
+  @column()
+  declare programId: string
   @column()
   declare securityCode: string
   @column()
@@ -96,6 +98,23 @@ export class PermissionSchema extends BaseModel {
   declare name: string | null
   @column()
   declare slug: string | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class ProgramSchema extends BaseModel {
+  static $columns = ['createdAt', 'deletedAt', 'id', 'name', 'status', 'updatedAt'] as const
+  $columns = ProgramSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column.dateTime()
+  declare deletedAt: DateTime | null
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare name: string
+  @column()
+  declare status: string | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 }

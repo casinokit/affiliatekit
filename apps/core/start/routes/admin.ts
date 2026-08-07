@@ -13,6 +13,10 @@ router
     router.put('/settings/group/:group', [controllers.admin.Settings, 'updateSettingsByGroup'])
     router.put('/settings/key/:key', [controllers.admin.Settings, 'updateSettingByKey'])
 
+    // Programs Routes
+    router.resource('programs', controllers.admin.Programs).apiOnly()
+    router.delete('programs/:id/force', [controllers.admin.Programs, 'forceDestroy'])
+
     // Brands Routes
     router.resource('brands', controllers.admin.Brands).apiOnly()
     router.delete('brands/:id/force', [controllers.admin.Brands, 'forceDestroy'])
