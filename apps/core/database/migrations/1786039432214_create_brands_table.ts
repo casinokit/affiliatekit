@@ -8,12 +8,6 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.uuid('id').primary().defaultTo(this.db.rawQuery('gen_random_uuid()').knexQuery)
 
-      table
-        .uuid('program_id')
-        .references('id')
-        .inTable('programs')
-        .onDelete('CASCADE')
-        .notNullable()
       table.string('name').notNullable()
       table.string('logo').nullable()
       table.string('url').nullable()
