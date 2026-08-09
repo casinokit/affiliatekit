@@ -14,12 +14,24 @@ export default class CommissionPlanTierService {
   }
 
   async createTier(payload: CreateCommissionPlanTierDto) {
-    return CommissionPlanTier.create(payload)
+    return CommissionPlanTier.create({
+      ...payload,
+      minValue: payload.minValue.toString(),
+      maxValue: payload.maxValue.toString(),
+      revsharePercentage: payload.revsharePercentage.toString(),
+      cpaAmount: payload.cpaAmount.toString(),
+    })
   }
 
   async updateTier(id: string, payload: UpdateCommissionPlanTierDto) {
     const tier = await this.getTier(id)
-    tier.merge(payload)
+    tier.merge({
+      ...payload,
+      minValue: payload.minValue?.toString(),
+      maxValue: payload.maxValue?.toString(),
+      revsharePercentage: payload.revsharePercentage?.toString(),
+      cpaAmount: payload.cpaAmount?.toString(),
+    })
     await tier.save()
 
     return tier

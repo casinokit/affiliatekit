@@ -27,7 +27,8 @@ export default class CommissionPlanAssignmentService {
 
     const programId = payload.programId || assignment.programId
     const brandId = payload.brandId === undefined ? assignment.brandId : payload.brandId
-    const affiliateId = payload.affiliateId === undefined ? assignment.affiliateId : payload.affiliateId
+    const affiliateId =
+      payload.affiliateId === undefined ? assignment.affiliateId : payload.affiliateId
 
     await this.validateScope(programId, brandId)
     await this.ensureScopeIsAvailable(programId, brandId, affiliateId, id)
@@ -76,7 +77,9 @@ export default class CommissionPlanAssignmentService {
     }
 
     if (await query.first()) {
-      throw new Exception('A commission plan assignment already exists for this scope', { status: 409 })
+      throw new Exception('A commission plan assignment already exists for this scope', {
+        status: 409,
+      })
     }
   }
 }

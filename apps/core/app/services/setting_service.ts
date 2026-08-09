@@ -1,5 +1,5 @@
 import Setting from '#models/setting'
-import type { UpdateSettingsByGroupDto, UpdateSettingByKeyDto } from '#validators/admin/setting'
+import type { UpdateSettingByKeyDto } from '#validators/admin/setting'
 
 export class SettingService {
   /**

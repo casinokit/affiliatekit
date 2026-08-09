@@ -20,6 +20,12 @@ router
     // Brands Routes
     router.resource('brands', controllers.admin.Brands).apiOnly()
     router.delete('brands/:id/force', [controllers.admin.Brands, 'forceDestroy'])
+
+    // Commission plan routes
+    router.resource('commission-plans', controllers.admin.CommissionPlans).apiOnly()
+    router.delete('commission-plans/:id/force', [controllers.admin.CommissionPlans, 'forceDestroy'])
+    router.resource('commission-plan-tiers', controllers.admin.CommissionPlanTiers).apiOnly()
+    router.resource('commission-plan-assignments', controllers.admin.CommissionPlanAssignments).apiOnly()
   })
   .prefix('/api/v1/admin')
   .use(middleware.auth())

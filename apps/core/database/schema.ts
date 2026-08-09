@@ -33,7 +33,7 @@ export class AuthAccessTokenSchema extends BaseModel {
 }
 
 export class BrandSchema extends BaseModel {
-  static $columns = ['createdAt', 'deletedAt', 'id', 'ipWhitelist', 'logo', 'name', 'programId', 'securityCode', 'status', 'updatedAt', 'url'] as const
+  static $columns = ['createdAt', 'deletedAt', 'id', 'ipWhitelist', 'logo', 'name', 'securityCode', 'status', 'updatedAt', 'url'] as const
   $columns = BrandSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime | null
@@ -48,8 +48,6 @@ export class BrandSchema extends BaseModel {
   @column()
   declare name: string
   @column()
-  declare programId: string
-  @column()
   declare securityCode: string
   @column()
   declare status: string
@@ -57,6 +55,81 @@ export class BrandSchema extends BaseModel {
   declare updatedAt: DateTime | null
   @column()
   declare url: string | null
+}
+
+export class CommissionPlanAssignmentSchema extends BaseModel {
+  static $columns = ['affiliateId', 'brandId', 'commissionPlanId', 'createdAt', 'endsAt', 'id', 'programId', 'startsAt', 'status', 'updatedAt'] as const
+  $columns = CommissionPlanAssignmentSchema.$columns
+  @column()
+  declare affiliateId: string | null
+  @column()
+  declare brandId: string | null
+  @column()
+  declare commissionPlanId: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column.dateTime()
+  declare endsAt: DateTime | null
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare programId: string
+  @column.dateTime()
+  declare startsAt: DateTime | null
+  @column()
+  declare status: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class CommissionPlanTierSchema extends BaseModel {
+  static $columns = ['commissionPlanId', 'cpaAmount', 'createdAt', 'id', 'maxValue', 'minValue', 'revsharePercentage', 'updatedAt'] as const
+  $columns = CommissionPlanTierSchema.$columns
+  @column()
+  declare commissionPlanId: string
+  @column()
+  declare cpaAmount: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare maxValue: string
+  @column()
+  declare minValue: string
+  @column()
+  declare revsharePercentage: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class CommissionPlanSchema extends BaseModel {
+  static $columns = ['cpaAmount', 'cpaTriggerDeposit', 'cpaTriggerWager', 'createdAt', 'deletedAt', 'hasNegativeCarryover', 'id', 'isTiered', 'model', 'name', 'revsharePercentage', 'updatedAt'] as const
+  $columns = CommissionPlanSchema.$columns
+  @column()
+  declare cpaAmount: string | null
+  @column()
+  declare cpaTriggerDeposit: string | null
+  @column()
+  declare cpaTriggerWager: string | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column.dateTime()
+  declare deletedAt: DateTime | null
+  @column()
+  declare hasNegativeCarryover: boolean | null
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare isTiered: boolean | null
+  @column()
+  declare model: string
+  @column()
+  declare name: string
+  @column()
+  declare revsharePercentage: string | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
 }
 
 export class PasswordResetTokenSchema extends BaseModel {
@@ -102,6 +175,17 @@ export class PermissionSchema extends BaseModel {
   declare updatedAt: DateTime | null
 }
 
+export class ProgramBrandSchema extends BaseModel {
+  static $columns = ['brandId', 'id', 'programId'] as const
+  $columns = ProgramBrandSchema.$columns
+  @column()
+  declare brandId: string
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare programId: string
+}
+
 export class ProgramSchema extends BaseModel {
   static $columns = ['createdAt', 'deletedAt', 'id', 'name', 'status', 'updatedAt'] as const
   $columns = ProgramSchema.$columns
@@ -114,7 +198,7 @@ export class ProgramSchema extends BaseModel {
   @column()
   declare name: string
   @column()
-  declare status: string | null
+  declare status: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 }

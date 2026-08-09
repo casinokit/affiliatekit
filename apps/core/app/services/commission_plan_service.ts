@@ -20,12 +20,24 @@ export default class CommissionPlanService {
   }
 
   async createCommissionPlan(payload: CreateCommissionPlanDto) {
-    return CommissionPlan.create(payload)
+    return CommissionPlan.create({
+      ...payload,
+      revsharePercentage: payload.revsharePercentage?.toString(),
+      cpaAmount: payload.cpaAmount?.toString(),
+      cpaTriggerDeposit: payload.cpaTriggerDeposit?.toString(),
+      cpaTriggerWager: payload.cpaTriggerWager?.toString(),
+    })
   }
 
   async updateCommissionPlan(id: string, payload: UpdateCommissionPlanDto) {
     const commissionPlan = await this.getCommissionPlan(id)
-    commissionPlan.merge(payload)
+    commissionPlan.merge({
+      ...payload,
+      revsharePercentage: payload.revsharePercentage?.toString(),
+      cpaAmount: payload.cpaAmount?.toString(),
+      cpaTriggerDeposit: payload.cpaTriggerDeposit?.toString(),
+      cpaTriggerWager: payload.cpaTriggerWager?.toString(),
+    })
     await commissionPlan.save()
 
     return commissionPlan
