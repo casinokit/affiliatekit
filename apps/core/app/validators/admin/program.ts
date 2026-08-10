@@ -9,6 +9,7 @@ export const createProgramValidator = vine.create(
   vine.object({
     name: vine.string().trim().minLength(2).maxLength(255),
     status: vine.enum(ProgramStatus).optional(),
+    brandIds: vine.array(vine.string().uuid()).optional(),
   })
 )
 
@@ -19,6 +20,7 @@ export const updateProgramValidator = vine.create(
   vine.object({
     name: vine.string().trim().minLength(2).maxLength(255).optional(),
     status: vine.enum(ProgramStatus).optional(),
+    brandIds: vine.array(vine.string().uuid()).optional(),
   })
 )
 

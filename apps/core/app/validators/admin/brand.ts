@@ -7,7 +7,6 @@ import { BrandStatus } from '#enums/brand_status'
  */
 export const createBrandValidator = vine.create(
   vine.object({
-    programId: vine.string().uuid(),
     name: vine.string().trim().minLength(2).maxLength(255),
     logo: vine.string().trim().optional(),
     url: vine.string().trim().url().optional(),
@@ -21,7 +20,6 @@ export const createBrandValidator = vine.create(
  */
 export const updateBrandValidator = vine.create(
   vine.object({
-    programId: vine.string().uuid().optional(),
     name: vine.string().trim().minLength(2).maxLength(255).optional(),
     logo: vine.string().trim().optional(),
     url: vine.string().trim().url().optional(),

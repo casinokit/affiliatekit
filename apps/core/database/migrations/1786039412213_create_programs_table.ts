@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.uuid('id').primary().defaultTo(this.db.rawQuery('gen_random_uuid()').knexQuery)
 
       table.string('name').notNullable()
-      table.string('status').defaultTo(ProgramStatus.ACTIVE)
+      table.string('status').notNullable().defaultTo(ProgramStatus.ACTIVE)
 
       table.timestamp('created_at')
       table.timestamp('updated_at')

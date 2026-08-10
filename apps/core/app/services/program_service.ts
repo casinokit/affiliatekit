@@ -1,6 +1,8 @@
 import Program from '#models/program'
 import type { CreateProgramDto, UpdateProgramDto } from '#validators/admin/program'
 import { ProgramStatus } from '#enums/program_status'
+import Brand from '#models/brand'
+import db from '@adonisjs/lucid/services/db'
 
 export default class ProgramService {
   /**
@@ -27,9 +29,26 @@ export default class ProgramService {
    * Create a new program
    */
   async createProgram(payload: CreateProgramDto) {
-    return Program.create({
-      ...payload,
-      status: payload.status || ProgramStatus.ACTIVE,
+    const { brandIds, ...programPayload } = payload
+
+    if (brandIds) {
+      await this.validateBrandIds(brandIds)
+    }
+
+    return db.transaction(async (trx) => {
+      const program = await Program.create(
+        {
+          ...programPayload,
+          status: payload.status || ProgramStatus.ACTIVE,
+        },
+        { client: trx }
+      )
+
+      if (brandIds) {
+        await program.related('brands').sync(brandIds)
+      }
+
+      return program
     })
   }
 
@@ -37,11 +56,24 @@ export default class ProgramService {
    * Update an existing program
    */
   async updateProgram(id: string, payload: UpdateProgramDto) {
-    const program = await this.getProgram(id)
-    program.merge(payload)
-    await program.save()
+    const { brandIds, ...programPayload } = payload
 
-    return program
+    if (brandIds) {
+      await this.validateBrandIds(brandIds)
+    }
+
+    return db.transaction(async (trx) => {
+      const program = await Program.query().useTransaction(trx).where('id', id).firstOrFail()
+      program.useTransaction(trx)
+      program.merge(programPayload)
+      await program.save()
+
+      if (brandIds) {
+        await program.related('brands').sync(brandIds)
+      }
+
+      return program
+    })
   }
 
   /**
@@ -58,5 +90,11 @@ export default class ProgramService {
   async forceDeleteProgram(id: string) {
     const program = (await Program.withTrashed().where('id', id).firstOrFail()) as Program
     await program.forceDelete()
+  }
+
+  private async validateBrandIds(brandIds: string[]) {
+    for (const brandId of brandIds) {
+      await Brand.findOrFail(brandId)
+    }
   }
 }
