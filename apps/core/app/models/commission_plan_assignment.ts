@@ -3,6 +3,8 @@ import { belongsTo } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import User from '#models/user'
 import CommissionPlan from '#models/commission_plan'
+import Program from '#models/program'
+import Brand from '#models/brand'
 
 export default class CommissionPlanAssignment extends CommissionPlanAssignmentSchema {
   @belongsTo(() => User, {
@@ -12,4 +14,10 @@ export default class CommissionPlanAssignment extends CommissionPlanAssignmentSc
 
   @belongsTo(() => CommissionPlan)
   declare commissionPlan: BelongsTo<typeof CommissionPlan>
+
+  @belongsTo(() => Program)
+  declare program: BelongsTo<typeof Program>
+
+  @belongsTo(() => Brand)
+  declare brand: BelongsTo<typeof Brand>
 }

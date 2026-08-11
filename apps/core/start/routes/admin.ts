@@ -21,6 +21,20 @@ router
     router.resource('brands', controllers.admin.Brands).apiOnly()
     router.delete('brands/:id/force', [controllers.admin.Brands, 'forceDestroy'])
 
+    // Affiliate Routes
+    router.resource('affiliates', controllers.admin.Affiliates).apiOnly()
+    router.delete('affiliates/:id/force', [controllers.admin.Affiliates, 'forceDestroy'])
+    router.get('affiliates/:id/commission-plans', [controllers.admin.Affiliates, 'commissionPlans'])
+    router.post('affiliates/:id/commission-plans', [controllers.admin.Affiliates, 'assignCommissionPlan'])
+    router.put(
+      'affiliates/:id/commission-plans/:assignmentId',
+      [controllers.admin.Affiliates, 'updateCommissionPlan']
+    )
+    router.delete(
+      'affiliates/:id/commission-plans/:assignmentId',
+      [controllers.admin.Affiliates, 'removeCommissionPlan']
+    )
+
     // Commission plan routes
     router.resource('commission-plans', controllers.admin.CommissionPlans).apiOnly()
     router.delete('commission-plans/:id/force', [controllers.admin.CommissionPlans, 'forceDestroy'])

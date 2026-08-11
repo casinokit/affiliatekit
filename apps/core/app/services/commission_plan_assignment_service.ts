@@ -11,8 +11,25 @@ export default class CommissionPlanAssignmentService {
     return CommissionPlanAssignment.query().orderBy('createdAt', 'desc').paginate(page, limit)
   }
 
+  async getAssignmentsForAffiliate(affiliateId: string, page: number, limit: number) {
+    return CommissionPlanAssignment.query()
+      .where('affiliateId', affiliateId)
+      .preload('program')
+      .preload('brand')
+      .preload('commissionPlan')
+      .orderBy('createdAt', 'desc')
+      .paginate(page, limit)
+  }
+
   async getAssignment(id: string) {
     return CommissionPlanAssignment.findOrFail(id)
+  }
+
+  async getAffiliateAssignment(affiliateId: string, id: string) {
+    return CommissionPlanAssignment.query()
+      .where('id', id)
+      .where('affiliateId', affiliateId)
+      .firstOrFail()
   }
 
   async createAssignment(payload: CreateCommissionPlanAssignmentDto) {
