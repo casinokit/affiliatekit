@@ -14,25 +14,26 @@ interface User {
 }
 
 export const useAuthStore = defineStore('auth', () => {
-  const storedUser = localStorage.getItem('auth_user')
+  const storedUser = sessionStorage.getItem('auth_user')
+  const storedToken = sessionStorage.getItem('auth_token')
   const user = ref<User | null>(storedUser ? JSON.parse(storedUser) : null)
-  const token = ref<string | null>(localStorage.getItem('auth_token'))
+  const token = ref<string | null>(storedToken)
 
   const setToken = (newToken: string) => {
     token.value = newToken
-    localStorage.setItem('auth_token', newToken)
+    sessionStorage.setItem('auth_token', newToken)
   }
 
   const setUser = (userData: User) => {
     user.value = userData
-    localStorage.setItem('auth_user', JSON.stringify(userData))
+    sessionStorage.setItem('auth_user', JSON.stringify(userData))
   }
 
   const logout = () => {
     token.value = null
     user.value = null
-    localStorage.removeItem('auth_token')
-    localStorage.removeItem('auth_user')
+    sessionStorage.removeItem('auth_token')
+    sessionStorage.removeItem('auth_user')
   }
 
   return {

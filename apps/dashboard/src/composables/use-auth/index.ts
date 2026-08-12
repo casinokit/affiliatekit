@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { api } from '@/lib/tuyau.ts'
+import { normalizeApiError } from '@/lib/api-error.ts'
 import { useAuthStore } from '@/stores/auth.ts'
 import { message } from 'ant-design-vue'
 
@@ -18,30 +19,10 @@ export function useAuth() {
   }
 
   const handleApiError = (err: any, defaultMsg: string) => {
-    // Tuyau attaches the parsed JSON body to err.response
-    // If the backend returns { errors: [...] }, we know it's a validation error.
-    if (err.response?.errors && Array.isArray(err.response.errors)) {
-      const errors = err.response.errors
-      const formattedErrors: Record<string, string> = {}
-      let generalError = ''
-
-      errors.forEach((e: any) => {
-        if (e.field && !formattedErrors[e.field]) {
-          formattedErrors[e.field] = e.message
-        }
-
-        if (!e.field && !generalError) {
-          generalError = e.message
-        }
-      })
-      validationErrors.value = formattedErrors
-      // Field messages are rendered beside their inputs. Keep the page free
-      // from a duplicate generic alert for validation responses.
-      errorMsg.value = generalError
-    } else {
-      errorMsg.value = err.response?.message || err.message || defaultMsg
-    }
-    throw new Error(errorMsg.value)
+    const normalized = normalizeApiError(err, defaultMsg)
+    validationErrors.value = normalized.fieldErrors
+    errorMsg.value = normalized.message
+    throw new Error(normalized.message)
   }
 
   const login = async (credentials: any) => {
@@ -121,14 +102,11 @@ export function useAuth() {
     loading.value = true
     clearErrors()
     try {
-      const response = await api.request('auth.register.store', {
+      await api.request('auth.register.store', {
         body: payload,
       })
 
-      const { message: msg } = response as any
-
       // Instead of redirecting, we return true to let the component hide the form
-      message.success(msg || 'Registration successful. Your account is pending activation.')
       return true
     } catch (err: any) {
       handleApiError(err, 'Registration failed.')
@@ -144,7 +122,6 @@ export function useAuth() {
       await api.request('auth.password_reset.forgot', {
         body: payload,
       })
-      void message.success('Password reset email sent!')
     } catch (err: any) {
       handleApiError(err, 'Failed to send reset email.')
     } finally {

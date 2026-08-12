@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { api } from '@/lib/tuyau.ts'
+import { normalizeApiError } from '@/lib/api-error.ts'
 import { message } from 'ant-design-vue'
 
 export function useSettings() {
@@ -13,20 +14,10 @@ export function useSettings() {
   }
 
   const handleApiError = (err: any, defaultMsg: string) => {
-    if (err.response?.errors && Array.isArray(err.response.errors)) {
-      const errors = err.response.errors
-      const formattedErrors: Record<string, string> = {}
-      errors.forEach((e: any) => {
-        if (!formattedErrors[e.field]) {
-          formattedErrors[e.field] = e.message
-        }
-      })
-      validationErrors.value = formattedErrors
-      errorMsg.value = err.response?.message || 'Validation failed. Please check your inputs.'
-    } else {
-      errorMsg.value = err.response?.message || err.message || defaultMsg
-    }
-    throw new Error(errorMsg.value)
+    const normalized = normalizeApiError(err, defaultMsg)
+    validationErrors.value = normalized.fieldErrors
+    errorMsg.value = normalized.message
+    throw new Error(normalized.message)
   }
 
   const getSettingsByGroup = async (group: string) => {
