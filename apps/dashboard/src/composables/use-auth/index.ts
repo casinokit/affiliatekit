@@ -23,13 +23,21 @@ export function useAuth() {
     if (err.response?.errors && Array.isArray(err.response.errors)) {
       const errors = err.response.errors
       const formattedErrors: Record<string, string> = {}
+      let generalError = ''
+
       errors.forEach((e: any) => {
-        if (!formattedErrors[e.field]) {
+        if (e.field && !formattedErrors[e.field]) {
           formattedErrors[e.field] = e.message
+        }
+
+        if (!e.field && !generalError) {
+          generalError = e.message
         }
       })
       validationErrors.value = formattedErrors
-      errorMsg.value = err.response?.message || 'Validation failed. Please check your inputs.'
+      // Field messages are rendered beside their inputs. Keep the page free
+      // from a duplicate generic alert for validation responses.
+      errorMsg.value = generalError
     } else {
       errorMsg.value = err.response?.message || err.message || defaultMsg
     }
@@ -131,16 +139,14 @@ export function useAuth() {
 
   const forgotPassword = async (payload: { email: string }) => {
     loading.value = true
-    errorMsg.value = ''
+    clearErrors()
     try {
       await api.request('auth.password_reset.forgot', {
         body: payload,
       })
       void message.success('Password reset email sent!')
     } catch (err: any) {
-      const serverMessage = err.response?.message
-      errorMsg.value = serverMessage || err.message || 'Failed to send reset email.'
-      throw new Error(errorMsg.value)
+      handleApiError(err, 'Failed to send reset email.')
     } finally {
       loading.value = false
     }

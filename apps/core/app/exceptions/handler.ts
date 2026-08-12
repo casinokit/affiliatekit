@@ -17,7 +17,12 @@ export default class HttpExceptionHandler extends ExceptionHandler {
     if (ctx.request.url().startsWith('/api/')) {
       // Handle VineJS Validation errors explicitly
       if (error.code === 'E_VALIDATION_ERROR') {
-        return ctx.response.fail('Validation failed', 422, error.messages)
+        const errors = error.messages.map((validationError: any) => ({
+          message: validationError.message,
+          field: validationError.field,
+        }))
+
+        return ctx.response.fail('Validation failed', 422, errors)
       }
 
       // Handle all other errors

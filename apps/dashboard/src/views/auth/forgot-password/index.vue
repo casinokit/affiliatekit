@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useAuth } from '../../../composables/use-auth'
 
-const { forgotPassword, loading, errorMsg } = useAuth()
+const { forgotPassword, loading, errorMsg, validationErrors } = useAuth()
 
 const form = ref({ email: '' })
 const emailSent = ref(false)
@@ -41,6 +41,8 @@ const onFinish = async (values: any) => {
       <a-form-item
         label="Email"
         name="email"
+        :validateStatus="validationErrors.email ? 'error' : ''"
+        :help="validationErrors.email"
         :rules="[
           { required: true, message: 'Please input your email!' },
           { type: 'email', message: 'Invalid email address.' },

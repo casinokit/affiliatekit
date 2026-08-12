@@ -29,7 +29,17 @@ export default class LoginController {
       deviceName = `Unknown Device (${ipAddress})`
     }
 
-    const { token } = await this.authService.login(payload, deviceName)
+    let token
+
+    try {
+      ;({ token } = await this.authService.login(payload, deviceName))
+    } catch (error: any) {
+      if (error.code === 'E_INVALID_CREDENTIALS') {
+        return response.fail('Invalid credentials', 401)
+      }
+
+      throw error
+    }
 
     return response.success('Logged in successfully', {
       token: token.value!.release(),

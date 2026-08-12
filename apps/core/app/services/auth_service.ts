@@ -60,7 +60,17 @@ export class AuthService {
   }
 
   async login(payload: LoginDto, deviceName: string = 'Unknown Device') {
-    const user = await User.verifyCredentials(payload.email, payload.password)
+    let user: User
+
+    try {
+      user = await User.verifyCredentials(payload.email, payload.password)
+    } catch (error: any) {
+      if (error.code === 'E_INVALID_CREDENTIALS') {
+        throw new Exception('Invalid credentials', { status: 401 })
+      }
+
+      throw error
+    }
 
     if (!user.emailVerifiedAt) {
       throw new Exception('Please verify your email address before logging in', { status: 403 })
