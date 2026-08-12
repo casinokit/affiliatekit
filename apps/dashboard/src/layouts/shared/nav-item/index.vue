@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 
 import type { PropType } from 'vue'
+import type { NavigationSubItem } from '@/types'
 
 const props = defineProps({
   routeName: { type: String, default: '' },
@@ -10,7 +11,7 @@ const props = defineProps({
   query: { type: Object as PropType<Record<string, string>>, default: null },
   icon: { type: [Object, Function], required: true },
   label: { type: String, required: true },
-  submenu: { type: Array as PropType<any[]>, default: null },
+  submenu: { type: Array as PropType<NavigationSubItem[]>, default: null },
   openSubmenu: { type: String, default: null },
   action: { type: String, default: null },
 })
@@ -49,7 +50,7 @@ const isActive = computed(() => {
 
 const isSubmenuOpen = computed(() => props.openSubmenu === props.label)
 
-const isSubItemActive = (item: any) => {
+const isSubItemActive = (item: NavigationSubItem) => {
   if (route.name !== item.routeName) {
     return false
   }
@@ -57,7 +58,7 @@ const isSubItemActive = (item: any) => {
 
   if (item.params) {
     const paramsMatch = Object.keys(item.params).every((key) => {
-      return route.params[key] === item.params[key]
+      return route.params[key] === item.params![key]
     })
     if (!paramsMatch) {
       return false
@@ -67,7 +68,7 @@ const isSubItemActive = (item: any) => {
   if (item.query) {
     return Object.keys(item.query).every((key) => {
       const routeValue = route.query[key]
-      const itemValue = item.query[key]
+      const itemValue = item.query![key]
       if (Array.isArray(routeValue)) {
         return routeValue.length === 1 && routeValue[0] === itemValue
       }
@@ -76,13 +77,13 @@ const isSubItemActive = (item: any) => {
   }
 
   if (!item.query && props.submenu) {
-    const siblingWithQueryActive = props.submenu.some((sibling: any) => {
+      const siblingWithQueryActive = props.submenu.some((sibling: NavigationSubItem) => {
       if (sibling === item || sibling.routeName !== item.routeName || !sibling.query) {
         return false
       }
       return Object.keys(sibling.query).every((key) => {
         const routeValue = route.query[key]
-        const siblingValue = sibling.query[key]
+        const siblingValue = sibling.query![key]
         if (Array.isArray(routeValue)) {
           return routeValue.length === 1 && routeValue[0] === siblingValue
         }

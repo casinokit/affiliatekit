@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { api } from '@/lib/tuyau.ts'
 import { normalizeApiError } from '@/lib/api-error.ts'
+import type { SettingsMap } from '@/types'
 import { message } from 'ant-design-vue'
 
 export function useSettings() {
@@ -36,7 +37,7 @@ export function useSettings() {
     }
   }
 
-  const updateSettingsByGroup = async (group: string, settings: Record<string, any>) => {
+  const updateSettingsByGroup = async (group: string, settings: SettingsMap) => {
     loading.value = true
     clearErrors()
     try {

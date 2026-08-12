@@ -7,16 +7,14 @@ export const UserFactory = factory
     return {
       fullName: faker.person.fullName(),
       email: faker.internet.email(),
-      password: 'password',
+      password: 'password123',
       companyName: faker.company.name(),
       status: UserStatus.ACTIVE,
-      streetAddress: faker.location.streetAddress(),
-      city: faker.location.city(),
-      state: faker.location.state(),
-      postal: faker.location.zipCode(),
-      country: faker.location.country(),
-      handler: faker.helpers.arrayElement(['email', 'skype', 'whatsapp']),
-      handlerUsername: faker.internet.username(),
+      meta: {
+        trafficSource: faker.helpers.arrayElement(['SEO', 'Social Media', 'Paid Ads', 'Email', 'Other']),
+        imHandlerType: faker.helpers.arrayElement(['Telegram', 'WhatsApp', 'Discord', 'Signal']),
+        imHandlerUsername: faker.internet.username(),
+      },
     }
   })
   .build()

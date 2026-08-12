@@ -1,17 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-
-interface User {
-  id: number
-  email: string
-  fullName?: string
-  full_name?: string
-  avatar?: string
-  companyName?: string
-  meta?: Record<string, any>
-  roles: string[]
-  permissions: string[]
-}
+import type { User } from '@/types'
 
 export const useAuthStore = defineStore('auth', () => {
   const storedUser = sessionStorage.getItem('auth_user')

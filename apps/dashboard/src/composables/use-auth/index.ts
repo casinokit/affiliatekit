@@ -56,7 +56,7 @@ export function useAuth() {
       void message.success('Logged in successfully!')
 
       // 5. Role-based redirection
-      if (user.roles.includes('admin') || user.roles.includes('affiliate_manager')) {
+      if (user.roles.includes('admin')) {
         await router.push('/admin')
       } else {
         await router.push('/affiliate')

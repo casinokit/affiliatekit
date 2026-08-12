@@ -17,6 +17,7 @@ import {
 } from '@lucide/vue'
 import { useAuth } from '@/composables/use-auth'
 import { useRoute } from 'vue-router'
+import type { NavigationItem } from '@/types/navigation'
 
 /* ---------- Props/emit ---------- */
 const props = defineProps<{
@@ -26,15 +27,7 @@ const emit = defineEmits<{ (e: 'update:isOpen', val: boolean): void }>()
 const updateIsOpen = (val: boolean) => emit('update:isOpen', val)
 
 /* ---------- Menu data ---------- */
-type MenuItem = {
-  label: string
-  icon: any
-  routeName?: string
-  action?: string
-  submenu?: { label: string; routeName: string }[]
-}
-
-const menuItems: MenuItem[] = [
+const menuItems: NavigationItem[] = [
   {
     label: 'Dashboard',
     icon: LayoutDashboard,
